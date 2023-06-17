@@ -14,6 +14,7 @@ from home.Encryption.monoalphabetic_cipher import Monodecrypt
 from home.Encryption.Vigenère_Cipher import VigenereEncrypt
 from home.Encryption.Vigenère_Cipher import VigenereDecrypt
 
+from .models import CipherText
 
 
 def userSignUp(request):
@@ -49,9 +50,6 @@ def user_login(request):
     
 
         
-
-
-
 # Create your views here.
 def EncryptText(request):
     if request.method == 'POST':
@@ -82,6 +80,8 @@ def EncryptText(request):
         context = {
             'outputText':outputText,
             'alert':alert,
+            'cipherKey': key,
+            'algo_id':algo_id,
         }
         return render(request, 'encrypt.html', context)
     return render(request, 'encrypt.html')
@@ -89,3 +89,21 @@ def EncryptText(request):
 def index(request):
     return render(request, 'index.html')
 
+def savedCipher(request):
+    if request.method == 'POST':
+        currentUser = request.user
+        title = request.POST.get('title')
+        Ciphertext = request.POST.get('CipherText')
+        algo_id = request.POST.get('algo_id')
+        cipherKey = request.POST.get('key')
+
+        CipherObj = CipherText.objects.create(
+            user = currentUser,
+            title = title,
+            text = Ciphertext,
+            key = cipherKey,
+            algo_id = algo_id
+        )
+        CipherObj.save()
+        return JsonResponse({"message":"Cipher text saved successfully!"})
+    return render(request, 'savedCipher.html')

@@ -55,6 +55,18 @@
       outline: none;
     }
 
+    .custom-input-title {
+      width: 50%;
+      border-radius: 20px;
+      outline: none;
+      border: none;
+    }
+
+    .custom-input-title:focus {
+      border: 1px solid rgb(40, 209, 212);
+      outline: none;
+    }
+
     .custom-btn {
       display: inline-block;
       width: 30%;
@@ -99,7 +111,7 @@
       </ul>
 
       <!-- <button class="button" id="form-open">Mudassar Amin</button> -->
-      <h6 class="text-primary">'{{request.user.username}}'</h6>
+      <h5 class="text-primary">@{{request.user.username}}</h5>
     </nav>
   </header>
   <div class="container">
@@ -108,6 +120,7 @@
       <div class="col-md-8 custom_col d-flex justify-content-center">
         <form action="" method="post">
           {% csrf_token %}
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
           <h2 class="d-block mt-4">Lets encrypt your sensitive information</h2>
           <!-- Button trigger modal -->
           <div class="float-end d-block" style="margin-right: 50px;">
@@ -119,7 +132,24 @@
             <textarea class="mt-2 shadow p-3 custom_form_control" name="inputText" id="textArea"
               placeholder="Enter your text here" cols="90" rows="10">{{outputText}}</textarea>
           </div>
-          <p>{{alert}}</p>
+          <!-- ---------------------------save cipher text------------------------ -->
+          <div class="d-flex justify-content-center float-start">
+            {% if alert %}
+            <p>{{alert}}</p>
+            <a style="outline: none; border: none; cursor: pointer;" class="p-1" onclick="toggleClass()"><i
+                class="bi bi-cloud-plus"></i></a>
+            {% endif %}
+          </div>
+          <div class="mb-2 save-cipher-text visually-hidden">
+            <input type="text" class="custom-input-title shadow p-3" id="ciphertitleText"
+              placeholder="Enter title to save">
+            <button type="button" class="btn btn-primary" style="margin-left: 7px;"
+              onclick="Savecipher({{cipherKey}}, {{algo_id}})">Save</button>
+            <small id="cipherSaveAlert"></small>
+          </div>
+
+          <!-- ---end Save cipher text -- -->
+
           <!-- Example single danger button -->
           <div class="input-group">
             <select class="custom-select shadow p-3" name="algo_id" id="inputGroupSelect04"
@@ -163,6 +193,15 @@
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>
   <script>
+
+
+
+    function toggleClass() {
+      var element = document.getElementsByClassName('save-cipher-text')[0];
+      element.classList.toggle('visually-hidden');
+    }
+
+
     var clipboard = new ClipboardJS('.btn');
     var copyMessage = document.querySelector('#copy-message');
     copyMessage.style.display = 'none'
@@ -196,7 +235,51 @@
       });
     });
 
+    function Savecipher(key, algo_id) {
+      var CipherTextarea = document.getElementById('textArea');
+      var titleElement = document.getElementById('ciphertitleText');
+      var CipherText = CipherTextarea.value;
+      var title = titleElement.value;
 
+      console.log('cipher text:', CipherText);
+      console.log('Title:', title);
+      console.log('key:', key);
+      console.log('algo_id:', algo_id);
+
+      var data = {
+        CipherText: CipherText,
+        title: title,
+        key: key,
+        algo_id: algo_id,
+      };
+      var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
+
+      // Set the CSRF token in the AJAX request headers
+      $.ajaxSetup({
+        headers: {
+          'X-CSRFToken': csrftoken
+        }
+      });
+
+      // Send the AJAX request
+      $.ajax({
+        url: '/savedCipher/', // Replace with your server endpoint for login
+        type: 'POST',
+        data: data,
+        success: function (response) {
+          // Handle the response from the server
+          console.log(response.message);
+          var alertElement = $(`#cipherSaveAlert`).text(response.message)
+          var textarea = $(`#textArea`)
+
+
+        },
+        error: function (xhr, status, error) {
+          // Handle error if any
+          console.error(error);
+        }
+      });
+    }
   </script>
 
 </body>

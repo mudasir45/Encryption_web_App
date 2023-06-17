@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data Encryption</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- <meta http-equiv="refresh" content="1"> -->
+    <style>
+        body{
+            background-color: azure;
+        }
+        .custom_col{
+            margin-top: 5em;
+            /* border: 1px solid red; */
+        }
+        .custom_form_control{
+            border: 2px solid rgb(255, 255, 255);
+            border-radius: 25px;
+            /* min-height: 20em; */
+            width: 100%;
+            
+
+        }
+        .custom_form_control:focus{
+            border: 2px solid rgb(40, 209, 212);
+            outline: none;
+        }
+        .custom-select{
+            width: 100%;
+            border-radius: 20px;
+            outline: none;
+            border: none;
+        }
+        .custom-select:focus{
+            border: 1px solid rgb(40, 209, 212);
+            outline: none;
+        }
+       
+        .custom-btn{
+            display: inline-block;
+            width: 30%;
+            padding: 10px;
+            margin: 5px;
+            color: white;
+            background-color: rgb(53, 207, 234);
+            font-size: 15px;
+            border-radius: 10px;
+            /* border: 1px solid rgb(231, 15, 44); */
+            border: none;
+            outline: none;
+        }
+        .custom-btn:hover{
+            background-color: rgb(19, 200, 232);  
+        }
+       /* h2{
+        display: block;
+        align-items: center;
+        border: 1px solid red;
+       } */
+      
+
+    </style>
+</head>
+  <body>
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 custom_col d-flex justify-content-center">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <h2 class="d-block">Lets encrypt your sensitive information</h2>
+                         <!-- Button trigger modal -->
+                        <div class="float-end d-block" style="margin-right: 50px;">
+                            <span style="margin-right: 5px;" id="copy-message" class=" position-absolute">Text copied!</span>
+                            <button type="button" data-clipboard-action="copy" data-clipboard-target="#textArea"  class="btn position-absolute mt-3"><i class="bi bi-clipboard"></i></button>
+                        </div>
+                        <div class="mb-3">
+                            <textarea  class="mt-2 shadow p-3 custom_form_control"  name="inputText" id="textArea" placeholder="Enter your text here" cols="90" rows="10">{{outputText}}</textarea>
+                          </div>
+                          <p>{{alert}}</p>
+                          <!-- Example single danger button -->
+                          <div class="input-group">
+                            <select class="custom-select shadow p-3" name="algo_id" id="inputGroupSelect04" aria-label="Example select with button addon">
+                              <option selected>Choose encryption algorithm</option>
+                              <option value="1">Ceaser Cipher</option>
+                              <option value="2">MonoAlpha Cipher</option>
+                              <option value="3">Vigenere Cipher</option>
+                            </select>
+                            <!-- <button class="btn btn-outline-secondary" type="button">Button</button> -->
+                          </div>
+                          <div class="input-group">
+                            <input type="hidden" name="key" placeholder="Enter Key " id="keyText" class="custom-select shadow p-3 mt-3" style="display: none;">
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="radio" value="1" name="lable" id="flexRadioDefault1" checked>
+                            <label class="form-check-label" for="flexRadioDefault1">
+                              Encrypt
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" value="0" name="lable" id="flexRadioDefault2" >
+                            <label class="form-check-label" for="flexRadioDefault2">
+                              Decrypt
+                            </label>
+                          </div>
+                        <div class="btn-div d-flex justify-content-between">
+                            <!-- <input type="hidden" value="encrypt" name="lable"> -->
+                            <button type="submit" class="shadow  bg-dark custom-btn mt-3">Submit</button>
+                           
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script>
+        var clipboard = new ClipboardJS('.btn');
+        var copyMessage = document.querySelector('#copy-message');
+            copyMessage.style.display = 'none'
+        clipboard.on('success', function(e) {
+            copyMessage.style.display = 'inline';
+            setTimeout(function() {
+                copyMessage.style.display = 'none';
+            }, 2000);
+        });
+
+        clipboard.on('error', function(e) {
+            alert('Copy failed!');
+        });
+
+
+
+        $(document).ready(function() {
+  $('#inputGroupSelect04').on('change', function() {
+    var selectedAlgorithm = $(this).val();
+    var keyInput = $('#keyText');
+
+    if (selectedAlgorithm === '1') {
+      keyInput.prop('type', 'number').attr('placeholder', 'Enter Numeric Key');
+      keyInput.fadeIn('fast');
+    } else if (selectedAlgorithm === '2') {
+        keyInput.fadeOut('fast');
+    } else if (selectedAlgorithm === '3') {
+        keyInput.prop('type', 'text').attr('placeholder', 'Enter Key (key should be lowercase alphabets)');
+        keyInput.fadeIn('fast');
+    }
+  });
+});
+
+
+    </script>
+
+</body>
+</html>

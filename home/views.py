@@ -14,7 +14,7 @@ from home.Encryption.Vigenère_Cipher import VigenereDecrypt
 
 
 # Create your views here.
-def index(request):
+def EncryptText(request):
     if request.method == 'POST':
         inputText = request.POST.get('inputText')
         algo_id = request.POST.get('algo_id')
@@ -44,5 +44,9 @@ def index(request):
             'outputText':outputText,
             'alert':alert,
         }
-        return render(request, 'index.html', context)
+        return render(request, 'encrypt.html', context)
+    return render(request, 'encrypt.html')
+
+def index(request):
     return render(request, 'index.html')
+

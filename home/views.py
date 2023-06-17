@@ -1,5 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+
 from home.Encryption.Ceaser_cipher import Ceasor_Cipher_Encrypt
 from home.Encryption.Ceaser_cipher import Ceasor_Cipher_Decrypt
 
@@ -10,6 +15,40 @@ from home.Encryption.Vigenère_Cipher import VigenereEncrypt
 from home.Encryption.Vigenère_Cipher import VigenereDecrypt
 
 
+
+def userSignUp(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        pass1 = request.POST.get('pass')
+        pass2 = request.POST.get('pass1')
+
+        user = User.objects.create(
+            email = email,
+            username = username,
+        )
+        user.set_password(pass1)
+        user.save()
+        return JsonResponse({"message":"User Registration successfull! Please login get access"})
+    
+    return render(request, 'index.html')
+    
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        pass1 = request.POST.get('password')
+
+        user = authenticate(username = username, password = pass1)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({"message":"Login successfull"})
+        else:
+            return JsonResponse({"message":"Invalid Credentials", "lable":"warning"})
+        
+    return render(request, 'index.html')
+    
+
+        
 
 
 

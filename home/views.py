@@ -50,7 +50,6 @@ def user_login(request):
     
 
         
-# 
 def EncryptText(request):
     if request.method == 'POST':
         inputText = request.POST.get('inputText')

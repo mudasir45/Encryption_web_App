@@ -65,7 +65,7 @@ def EncryptText(request):
                 outputText = Monoencrypt(plaintext=inputText)
             elif algo_id == "3":
                 outputText = VigenereEncrypt(plainText=inputText, inputKey=key)
-            alert = "Your Cipher text also stored in your database for use in future!"
+            alert = "Do you want to save your cipher text in database for use in future? "
         elif lable == "0":
             if algo_id == "1":
                 outputText = Ceasor_Cipher_Decrypt(CipherText=inputText, key=int(key))
@@ -76,6 +76,8 @@ def EncryptText(request):
         else:
             return HttpResponse("Invalid request!")
        
+        # if algo_id == '2':
+        #     key = 'None'
         context = {
             'outputText':outputText,
             'alert':alert,

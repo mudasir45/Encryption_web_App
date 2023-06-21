@@ -83,6 +83,32 @@
     .header {
       background-color: rgb(51, 58, 58);
     }
+
+    .custom-box{
+      padding: 15px;
+      border: 1px solid gainsboro;
+      border-radius: 15px;
+      box-shadow: 2px 2px gainsboro;
+      margin-top: 8em;
+      text-align: center;
+    }
+    .custom-box:hover{
+      box-shadow: 3px 2px rgb(213, 209, 209);
+      background-color:whitesmoke;
+      transition: ease-in 1;
+    }
+    .custom-box h2{
+      background-color: darkcyan;
+      color: white;
+      padding: 8px;
+      border-radius: 15px;
+      font-size: 25px;
+    }
+    .custom-box p{
+      text-decoration: none;
+      color: black;
+      font-size: 15px;
+    }
   </style>
 </head>
 
@@ -107,7 +133,11 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-md-4"></div>
+
+      <a href=""><div class="col-md-4 custom-box">
+        <h2>Title of Cipher</h2>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quis debitis facilis, sit minus autem molestiae veritatis provident possimus!</p>
+      </div></a>
     </div>
   </div>
 

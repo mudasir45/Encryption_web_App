@@ -56,7 +56,8 @@
     }
 
     .custom-input-title {
-      width: 50%;
+      width: 60%;
+      display: inline-block;
       border-radius: 20px;
       outline: none;
       border: none;
@@ -92,6 +93,9 @@
        } */
     .header {
       background-color: rgb(51, 58, 58);
+    }
+    .custom-alert{
+      color:blue
     }
   </style>
 </head>
@@ -135,14 +139,24 @@
           <!-- ---------------------------save cipher text------------------------ -->
           <div class="d-flex justify-content-center float-start">
             {% if alert %}
-            <p>{{alert}}</p>
+            <p class="custom-alert">{{alert}}</p>
             <a style="outline: none; border: none; cursor: pointer;" class="p-1" onclick="toggleClass()"><i
                 class="bi bi-cloud-plus"></i></a>
             {% endif %}
           </div>
           <div class="mb-2 save-cipher-text visually-hidden">
+            
+            {% if VerfyText %}
+            <div>
+              <input type="text" class="custom-input-title shadow p-3 d-block" id=""
+                placeholder="Enter title to save">
+                <input type="text" class="custom-input-title shadow p-3" id=""
+                placeholder="Enter title to save">
+            </div>
+            {% else %}
             <input type="text" class="custom-input-title shadow p-3" id="ciphertitleText"
-              placeholder="Enter title to save">
+            placeholder="Enter title to save">
+            {% endif %}
             <button type="button" class="btn btn-primary" style="margin-left: 7px;"
               onclick="Savecipher({{cipherKey}}, {{algo_id}})">Save</button>
             <small id="cipherSaveAlert"></small>

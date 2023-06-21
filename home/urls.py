@@ -8,4 +8,5 @@ urlpatterns = [
     path('userSignUp/', views.userSignUp, name="userSignUp"),
     path('savedCipher/', views.savedCipher, name="savedCipher"),
     path('UserSavedCiphers/', views.UserSavedCiphers, name="UserSavedCiphers"),
+    path('EditSavedCipher/<int:id>/', views.EditSavedCipher, name="EditSavedCipher"),
 ]

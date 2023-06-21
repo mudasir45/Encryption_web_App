@@ -133,11 +133,12 @@
 
   <div class="container">
     <div class="row">
-
-      <a href=""><div class="col-md-4 custom-box">
-        <h2>Title of Cipher</h2>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quis debitis facilis, sit minus autem molestiae veritatis provident possimus!</p>
+      {% for cipher in CipherList %}
+      <a href="{% url 'EditSavedCipher' cipher.id %}"><div class="col-md-4 custom-box">
+        <h2>{{cipher.title}}</h2>
+        <p>{{cipher.text}}</p>
       </div></a>
+      {% endfor %}
     </div>
   </div>
 

@@ -111,4 +111,25 @@ def savedCipher(request):
 
 
 def UserSavedCiphers(request):
-    return render(request, 'savedCipher.html')
+    current_user = request.user
+    CipherList = CipherText.objects.filter(user = current_user)
+    context = {
+        'CipherList':CipherList,
+    }
+    return render(request, 'savedCipher.html', context)
+
+def EditSavedCipher(request, id):
+    Cipher = CipherText.objects.get(id = id)
+    outputText = Cipher.text
+    alert = "Want to know the key and and alorithm? "
+    key = Cipher.key
+    algo_id = Cipher.algo_id
+    VerfyText = 1
+    context = {
+            'outputText':outputText,
+            'alert':alert,
+            'cipherkey': key,
+            'algo_id':algo_id,
+            'VerfyText':VerfyText,
+        }
+    return render(request, 'encrypt.html', context)

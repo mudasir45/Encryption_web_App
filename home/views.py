@@ -108,3 +108,7 @@ def savedCipher(request):
         CipherObj.save()
         return JsonResponse({"message":"Cipher text saved successfully!"})
     return render(request, 'savedCipher.html')
+
+
+def UserSavedCiphers(request):
+    return render(request, 'savedCipher.html')

@@ -76,8 +76,8 @@ def EncryptText(request):
         else:
             return HttpResponse("Invalid request!")
        
-        # if algo_id == '2':
-        #     key = 'None'
+        if algo_id == '2':
+            key = 0
         context = {
             'outputText':outputText,
             'alert':alert,

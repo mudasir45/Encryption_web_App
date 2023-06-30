@@ -71,17 +71,17 @@
                 <li class="nav_item">
                     <a href="{% url 'index' %}" class="nav_link">Home</a>
                     {% if request.user.is_authenticated %}
-                        <a href="{% url 'EncryptText' %}" class="nav_link">Product</a>
+                    <a href="{% url 'EncryptText' %}" class="nav_link">Product</a>
                     {% else %}
-                        <a class="nav_link" id="form-open">Product</a>
+                    <a class="nav_link" id="form-open">Product</a>
                     {% endif %}
                     <a href="#" class="nav_link">Services</a>
                     <a href="#" class="nav_link">Contact</a>
                 </li>
             </ul>
-                
-                <button class="button" id="form-open">Login</button>
-                    
+
+            <button class="button" id="form-open">Login</button>
+
         </nav>
     </header>
 
@@ -99,7 +99,7 @@
 
                     <div id="login-alert" class="alert" style="display: none;">
                         <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
-                        
+
                     </div>
                     <div class="input_box">
                         <input type="text" id="login-username" name="username" placeholder="Enter Username" required />
@@ -134,7 +134,7 @@
 
                     <div id="singup-alert" class="alert alert-success" style="display: none;">
                         <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
-                        
+
                     </div>
 
                     {% include 'alert.html' %}
@@ -170,8 +170,9 @@
 
         $(document).ready(function () {
             function userIsAuthenticated() {
-        return '{{ user.is_authenticated }}' === 'True';
-    }
+                return '{{ user.is_authenticated }}' === 'True';
+            }
+
             $('.login_form form').submit(function (event) {
                 event.preventDefault(); // Prevent the default form submission
 
@@ -185,7 +186,7 @@
                     password: password
                 };
                 console.log(data)
-                
+
 
                 // Get the CSRF token
                 var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
@@ -206,17 +207,17 @@
                         // Handle the response from the server
                         console.log(response.message);
                         var loginAlert = $("#login-alert");
-                        if(userIsAuthenticated()){
+                        if (response.message === "Login successfull") {
                             loginAlert.removeClass('alert-error')
                             loginAlert.addClass('alert-success')
                             loginAlert.hide().text(response.message).show();
                             window.location.href = "{% url 'EncryptText' %}";
                         }
-                        else{
+                        else {
                             loginAlert.addClass('alert-error')
                             loginAlert.hide().text(response.message).show();
                         }
-                       
+
                     },
                     error: function (xhr, status, error) {
                         // Handle error if any
@@ -275,7 +276,7 @@
         });
 
 
-    
+
     </script>
 </body>
 

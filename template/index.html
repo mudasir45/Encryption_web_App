@@ -203,6 +203,7 @@
                         console.log(response.message);
                         var loginAlert = $("#login-alert");
                         loginAlert.hide().text(response.message).show();
+                        if(request.)
                         window.location.href = "{% url 'EncryptText' %}";
                     },
                     error: function (xhr, status, error) {

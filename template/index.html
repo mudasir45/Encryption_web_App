@@ -169,6 +169,9 @@
     <script>
 
         $(document).ready(function () {
+            function userIsAuthenticated() {
+        return '{{ user.is_authenticated }}' === 'True';
+    }
             $('.login_form form').submit(function (event) {
                 event.preventDefault(); // Prevent the default form submission
 
@@ -204,7 +207,8 @@
                         console.log(response.message);
                         var loginAlert = $("#login-alert");
                         if(userIsAuthenticated()){
-                            loginAlert.addClass('alert-error')
+                            loginAlert.removeClass('alert-error')
+                            loginAlert.addClass('alert-success')
                             loginAlert.hide().text(response.message).show();
                             window.location.href = "{% url 'EncryptText' %}";
                         }
@@ -271,9 +275,7 @@
         });
 
 
-    function userIsAuthenticated() {
-        return '{{ user.is_authenticated }}' === 'True';
-    }
+    
     </script>
 </body>
 

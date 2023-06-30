@@ -167,6 +167,7 @@
 
     <script src="{% static 'script.js' %}"></script>
     <script>
+
         $(document).ready(function () {
             $('.login_form form').submit(function (event) {
                 event.preventDefault(); // Prevent the default form submission
@@ -202,9 +203,16 @@
                         // Handle the response from the server
                         console.log(response.message);
                         var loginAlert = $("#login-alert");
-                        loginAlert.hide().text(response.message).show();
-                        if(request.)
-                        window.location.href = "{% url 'EncryptText' %}";
+                        if(userIsAuthenticated()){
+                            loginAlert.addClass('alert-error')
+                            loginAlert.hide().text(response.message).show();
+                            window.location.href = "{% url 'EncryptText' %}";
+                        }
+                        else{
+                            loginAlert.addClass('alert-error')
+                            loginAlert.hide().text(response.message).show();
+                        }
+                       
                     },
                     error: function (xhr, status, error) {
                         // Handle error if any
@@ -262,6 +270,10 @@
             });
         });
 
+
+    function userIsAuthenticated() {
+        return '{{ user.is_authenticated }}' === 'True';
+    }
     </script>
 </body>
 
